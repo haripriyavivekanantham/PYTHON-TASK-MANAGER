@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 import os
 from dotenv import load_dotenv
 
@@ -34,7 +33,11 @@ app.add_middleware(
 )
 
 # ─── Serve uploaded profile pictures ──────────────────────────────────────────
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+# Only mount static files if uploads folder exists
+uploads_path = os.path.join(os.getcwd(), "uploads")
+if os.path.exists(uploads_path):
+    from fastapi.staticfiles import StaticFiles
+    app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # ─── Routers ──────────────────────────────────────────────────────────────────
 app.include_router(auth.router)
