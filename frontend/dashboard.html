@@ -50,6 +50,18 @@
     .time-tag.overdue { color: var(--danger); }
     .time-tag.soon    { color: var(--warn); }
     .time-tag.ok      { color: var(--success); }
+    .set-btn {
+      background: var(--success-dim);
+      border: 1px solid rgba(16,185,129,0.3);
+      color: var(--success);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .set-btn:hover { background: rgba(16,185,129,0.2); }
   </style>
 </head>
 <body data-page="dashboard">
@@ -72,7 +84,8 @@
         <img id="avatar-sm-img" class="avatar-sm" src="" alt=""
              onclick="window.location.href='profile.html'" title="My Profile"
              style="display:none;" />
-        <button class="btn btn-ghost" id="logout-btn" style="padding:6px 14px;font-size:13px;">Sign out</button>
+        <button class="btn btn-ghost" id="logout-btn"
+                style="padding:6px 14px;font-size:13px;">Sign out</button>
       </div>
     </header>
 
@@ -88,19 +101,25 @@
         <div style="display:flex;align-items:flex-start;gap:16px;">
           <div style="font-size:28px;">✨</div>
           <div style="flex:1;">
-            <p id="quote-text" style="font-size:15px;color:var(--text);font-style:italic;
-               line-height:1.7;margin-bottom:8px;">Loading...</p>
+            <p id="quote-text" style="font-size:15px;color:var(--text);
+               font-style:italic;line-height:1.7;margin-bottom:8px;">Loading...</p>
             <p id="quote-author" style="font-size:12px;color:var(--accent);
-               font-weight:600;text-transform:uppercase;letter-spacing:0.8px;margin:0;"></p>
+               font-weight:600;text-transform:uppercase;
+               letter-spacing:0.8px;margin:0;"></p>
           </div>
         </div>
-        <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(59,130,246,0.15);
+        <div style="margin-top:14px;padding-top:14px;
+                    border-top:1px solid rgba(59,130,246,0.15);
                     display:flex;align-items:center;gap:8px;">
           <span style="font-size:12px;color:var(--text-muted);">Today's goal:</span>
-          <span id="task-goal" style="font-size:12px;color:var(--success);font-weight:600;"></span>
-          <button onclick="refreshMotivation()" style="margin-left:auto;background:none;
-            border:1px solid rgba(59,130,246,0.25);color:var(--accent);border-radius:6px;
-            padding:4px 12px;font-size:11px;cursor:pointer;">New Quote 🔄</button>
+          <span id="task-goal" style="font-size:12px;
+                color:var(--success);font-weight:600;"></span>
+          <button onclick="refreshMotivation()" style="margin-left:auto;
+            background:none;border:1px solid rgba(59,130,246,0.25);
+            color:var(--accent);border-radius:6px;
+            padding:4px 12px;font-size:11px;cursor:pointer;">
+            New Quote 🔄
+          </button>
         </div>
       </div>
 
@@ -122,37 +141,107 @@
 
       <!-- Create Task -->
       <div class="panel">
-        <div class="panel-header"><span class="panel-title">New Task</span></div>
+        <div class="panel-header">
+          <span class="panel-title">New Task</span>
+        </div>
         <form id="task-form" autocomplete="off">
+
           <div class="form-group">
             <label for="new-title">Title *</label>
-            <input id="new-title" type="text" placeholder="What do you need to do?" required maxlength="200" />
+            <input id="new-title" type="text"
+                   placeholder="What do you need to do?"
+                   required maxlength="200" />
           </div>
+
           <div class="form-group">
             <label for="new-desc">Description</label>
             <input id="new-desc" type="text" placeholder="Optional details" />
           </div>
-          <div class="form-row-3">
-            <div class="form-group" style="margin-bottom:0;">
-              <label for="new-priority">Priority</label>
-              <select id="new-priority">
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-                <option value="low">Low</option>
-              </select>
-            </div>
-            <div class="form-group" style="margin-bottom:0;">
-              <label for="new-start">Start Time</label>
-              <input id="new-start" type="datetime-local" />
-            </div>
-            <div class="form-group" style="margin-bottom:0;">
-              <label for="new-end">End Time (Deadline)</label>
-              <input id="new-end" type="datetime-local" />
+
+          <div class="form-group">
+            <label for="new-priority">Priority</label>
+            <select id="new-priority">
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+
+          <!-- Start Time -->
+          <div class="form-group">
+            <label>Start Date & Time</label>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input id="new-start" type="datetime-local"
+                     style="flex:1;min-width:160px;" />
+              <button type="button" class="set-btn"
+                      onclick="setNow('new-start')">
+                ✓ Set Now
+              </button>
+              <button type="button" onclick="clearTime('new-start')" style="
+                background:transparent;border:1px solid var(--border);
+                color:var(--text-muted);border-radius:6px;
+                padding:8px 10px;font-size:12px;cursor:pointer;">✕</button>
             </div>
           </div>
-          <div style="margin-top:16px;">
-            <button class="btn btn-primary" id="create-btn" type="submit">+ Add Task</button>
+
+          <!-- End Time -->
+          <div class="form-group">
+            <label>End Date & Time (Deadline)</label>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input id="new-end" type="datetime-local"
+                     style="flex:1;min-width:160px;" />
+              <button type="button" onclick="confirmTime('new-end')" style="
+                background:rgba(245,158,11,0.12);
+                border:1px solid rgba(245,158,11,0.3);
+                color:var(--warn);border-radius:6px;
+                padding:8px 14px;font-size:12px;
+                font-weight:600;cursor:pointer;white-space:nowrap;">
+                ✓ Set
+              </button>
+              <button type="button" onclick="clearTime('new-end')" style="
+                background:transparent;border:1px solid var(--border);
+                color:var(--text-muted);border-radius:6px;
+                padding:8px 10px;font-size:12px;cursor:pointer;">✕</button>
+            </div>
           </div>
+
+          <!-- Quick Deadline Buttons -->
+          <div style="margin-bottom:16px;display:flex;gap:8px;
+                      flex-wrap:wrap;align-items:center;">
+            <span style="font-size:11px;color:var(--text-muted);
+              text-transform:uppercase;letter-spacing:0.5px;">
+              Quick set:
+            </span>
+            <button type="button" onclick="setQuickDeadline(1)" style="
+              background:transparent;border:1px solid var(--border);
+              color:var(--text-dim);border-radius:6px;
+              padding:4px 12px;font-size:12px;cursor:pointer;">
+              +1 Hour
+            </button>
+            <button type="button" onclick="setQuickDeadline(24)" style="
+              background:transparent;border:1px solid var(--border);
+              color:var(--text-dim);border-radius:6px;
+              padding:4px 12px;font-size:12px;cursor:pointer;">
+              Tomorrow
+            </button>
+            <button type="button" onclick="setQuickDeadline(72)" style="
+              background:transparent;border:1px solid var(--border);
+              color:var(--text-dim);border-radius:6px;
+              padding:4px 12px;font-size:12px;cursor:pointer;">
+              3 Days
+            </button>
+            <button type="button" onclick="setQuickDeadline(168)" style="
+              background:transparent;border:1px solid var(--border);
+              color:var(--text-dim);border-radius:6px;
+              padding:4px 12px;font-size:12px;cursor:pointer;">
+              1 Week
+            </button>
+          </div>
+
+          <button class="btn btn-primary" id="create-btn" type="submit">
+            + Add Task
+          </button>
+
         </form>
       </div>
 
@@ -160,21 +249,28 @@
       <div class="panel">
         <div class="panel-header">
           <span class="panel-title">My Tasks</span>
-          <select id="priority-filter" style="width:auto;font-size:13px;padding:6px 10px;">
+          <select id="priority-filter"
+                  style="width:auto;font-size:13px;padding:6px 10px;">
             <option value="">All priorities</option>
             <option value="high">High</option>
             <option value="medium">Medium</option>
             <option value="low">Low</option>
           </select>
         </div>
+
+        <!-- Filter chips -->
         <div class="filter-bar">
           <button class="filter-chip active" id="filter-all">All</button>
           <button class="filter-chip" id="filter-active">Pending</button>
           <button class="filter-chip" id="filter-done">Completed</button>
         </div>
+
+        <!-- Tasks -->
         <div class="task-list" id="task-list">
           <div class="loading">Loading tasks…</div>
         </div>
+
+        <!-- Pagination -->
         <div id="pagination"></div>
       </div>
 

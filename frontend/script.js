@@ -485,6 +485,46 @@ async function deleteTask(id) {
     await loadTasks();
   } catch (err) { alert(err.message); }
 }
+// ─── Time Helper Buttons ──────────────────────────────────────────────────────
+function toLocalDatetimeString(date) {
+  const offset = date.getTimezoneOffset();
+  const local = new Date(date.getTime() - offset * 60000);
+  return local.toISOString().slice(0, 16);
+}
+
+function setNow(fieldId) {
+  document.getElementById(fieldId).value = toLocalDatetimeString(new Date());
+}
+
+function confirmTime(fieldId) {
+  const field = document.getElementById(fieldId);
+  if (!field.value) {
+    const d = new Date();
+    d.setHours(d.getHours() + 1);
+    field.value = toLocalDatetimeString(d);
+  }
+  field.style.borderColor = '#10b981';
+  field.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.12)';
+  setTimeout(() => {
+    field.style.borderColor = '';
+    field.style.boxShadow = '';
+  }, 1500);
+}
+
+function setQuickDeadline(hours) {
+  const start = new Date();
+  const end = new Date();
+  end.setHours(end.getHours() + hours);
+  document.getElementById('new-start').value = toLocalDatetimeString(start);
+  document.getElementById('new-end').value   = toLocalDatetimeString(end);
+}
+
+function clearTime(fieldId) {
+  document.getElementById(fieldId).value = '';
+}
+
+
+
 
 function escHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');

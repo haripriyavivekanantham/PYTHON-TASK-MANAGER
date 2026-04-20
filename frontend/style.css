@@ -497,3 +497,17 @@ select option { background: var(--surface2); }
   .card { padding: 24px; }
   .filter-bar { gap: 8px; }
 }
+/* Set button for datetime */
+.datetime-wrap { position: relative; }
+.set-btn {
+  background: var(--success-dim);
+  border: 1px solid rgba(16,185,129,0.3);
+  color: var(--success);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.set-btn:hover { background: rgba(16,185,129,0.2); }
