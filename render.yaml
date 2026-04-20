@@ -2,9 +2,8 @@ services:
   - type: web
     name: taskmanager-api
     runtime: python
-    rootDir: backend
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: SECRET_KEY
         generateValue: true
@@ -14,3 +13,5 @@ services:
         value: "30"
       - key: DATABASE_URL
         value: sqlite:///./taskmanager.db
+      - key: PYTHON_VERSION
+        value: "3.11.9"
