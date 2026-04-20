@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile – TaskManager</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .avatar-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+      margin-bottom: 12px;
+      background: var(--surface2);
+    }
+    .avatar-placeholder {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 3px solid rgba(59,130,246,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .upload-btn {
+      font-size: 12px;
+      padding: 6px 14px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .info-label { color: var(--text-muted); }
+    .info-value { color: var(--text); font-weight: 500; }
+  </style>
+</head>
+<body data-page="profile">
+  <div class="dashboard-layout">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon">✦</div>
+        <div class="brand-name">Task<span>Manager</span></div>
+      </div>
+      <div class="topbar-right">
+        <a href="dashboard.html" class="btn btn-ghost" style="padding:6px 14px;font-size:13px;">← Dashboard</a>
+        <button class="btn btn-ghost" id="logout-btn" style="padding:6px 14px;font-size:13px;">Sign out</button>
+      </div>
+    </header>
+
+    <main class="main-content" style="max-width:520px;">
+
+      <!-- Motivation card -->
+      <div id="motivation-card" style="
+        background:linear-gradient(135deg,rgba(59,130,246,0.15),rgba(16,185,129,0.10));
+        border:1px solid rgba(59,130,246,0.25);border-radius:12px;
+        padding:18px 22px;margin-bottom:24px;display:none;">
+        <p id="motivation-msg" style="margin:0;font-size:14px;font-style:italic;color:var(--text);"></p>
+        <p id="motivation-quote" style="margin:8px 0 0;font-size:12px;color:var(--text-muted);"></p>
+      </div>
+
+      <!-- Profile card -->
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">My Profile</span></div>
+
+        <div class="alert" id="alert"></div>
+
+        <!-- Avatar -->
+        <div class="avatar-wrap">
+          <div id="avatar-placeholder" class="avatar-placeholder">?</div>
+          <img id="avatar-img" class="avatar" src="" alt="Profile" style="display:none;" />
+          <input type="file" id="pic-input" accept="image/*" style="display:none;" onchange="uploadPicture()" />
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost upload-btn" onclick="document.getElementById('pic-input').click()">
+              📷 Change Photo
+            </button>
+            <button class="btn btn-danger upload-btn" id="remove-pic-btn" onclick="removePicture()" style="display:none;">
+              Remove
+            </button>
+          </div>
+        </div>
+
+        <!-- Info rows -->
+        <div class="info-row">
+          <span class="info-label">Username</span>
+          <span class="info-value" id="info-username">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Email</span>
+          <span class="info-value" id="info-email">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Member since</span>
+          <span class="info-value" id="info-joined">—</span>
+        </div>
+
+        <!-- Edit name -->
+        <div style="margin-top:24px;">
+          <div class="form-group">
+            <label for="full-name">Display Name</label>
+            <input id="full-name" type="text" placeholder="Enter your full name" maxlength="100" />
+          </div>
+          <button class="btn btn-primary" onclick="updateProfile()">Save Changes</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>
